@@ -59,3 +59,5 @@ function game() {
         console.log(playRound(prompt("Rock, paper, scissors? "), computerPlay()));
     }
 }
+
+game();
