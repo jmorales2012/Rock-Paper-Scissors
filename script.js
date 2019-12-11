@@ -1,63 +1,82 @@
+const body = document.querySelector('.container');
+let playerScore = 0;
+let computerScore = 0;
+
+
+const buttons = document.querySelectorAll('button');
+buttons.forEach(btn => {
+  btn.addEventListener('click', playRound);
+});
+
 function computerPlay() {
-    let choices = ['rock', 'paper', 'scissors'];
+    let choices = ['Rock', 'Paper', 'Scissors'];
     return choices[Math.floor(Math.random() * 3)];
 }
 
-
-function playRound(playerSelection, computerSelection) {
-    let playerSel = playerSelection.toLowerCase();
-    let choices = ['rock', 'paper', 'scissors'];
-    
-    // make sure player input is valid
-    if (choices.indexOf(playerSel) === -1) {
-        return "Please enter valid choice: rock, paper, scissors";
+function compareChoices(playerChoice, computerChoice) {
+  let result;
+  if (playerChoice === computerChoice) {
+    result = 'Draw';
+  } else if (
+    playerChoice === 'Rock' && computerChoice === 'Scissors'
+    || playerChoice === 'Paper' && computerChoice === 'Rock' 
+    || playerChoice === 'Scissors' && computerChoice === 'Paper') {
+      result = 'Win';
+    } else {
+      result = 'Lose';
     }
-
-    // check for winner
-    if (playerSel === "rock") {
-        switch(computerSelection) {
-            case "rock":
-                return "Tie! You both chose rock!";
-                break;
-            case "paper":
-                return "You lose! Paper beats rocks!";
-                break;
-            case "scissors":
-                return "You win! Rock beats scissors!";
-                break; 
-        }
-    } else if (playerSel === "paper") {
-        switch(computerSelection) {
-            case "rock":
-                return "You win! Paper beats rock!";
-                break;
-            case "paper":
-                return "Tie! You both chose paper!";
-                break;
-            case "scissors":
-                return "You lose! Scissors beats paper!";
-                break;
-        }
-    } else if (playerSel === "scissors") {
-        switch(computerSelection) {
-            case "rock":
-                return "You lose! Rock beats scissors!";
-                break;
-            case "paper":
-                return "You win! Scissors beats paper!";
-                break;
-            case "scissors":
-                return "Tie! You both chose scissors!";
-                break;
-        }
-    }
+    return result;
 }
 
-
-function game() {
-    for (let i = 0; i < 5; i++) {
-        console.log(playRound(prompt("Rock, paper, scissors? "), computerPlay()));
-    }
+function updateScore(result) {
+  if (result === 'Win') {
+    playerScore++;
+  } else if (result === 'Lose') {
+    computerScore++;
+  }
 }
 
-game();
+function updateDisplay(playerChoice, computerChoice, result) {
+  let playerScoreDisplay = document.querySelector('.player-score');
+  let computerScoreDisplay = document.querySelector('.computer-score');
+  let roundResultDisplay = document.querySelector('.round-result');
+  let playerChoiceDisplay = document.querySelector('.player-choice');
+  let computerChoiceDisplay = document.querySelector('.computer-choice');
+
+  playerScoreDisplay.innerText = `Player Score:  ${playerScore}`;
+  computerScoreDisplay.innerText = `Computer Score:  ${computerScore}`;
+  playerChoiceDisplay.innerText = `Player Choice: ${playerChoice}`;
+  computerChoiceDisplay.innerText = `Computer Choice: ${computerChoice}`;
+  roundResultDisplay.innerText = result[0].toUpperCase() + result.slice(1);
+}
+
+function decideGame() {
+  let decision = '';
+  if (playerScore === 5) {
+    decision = 'Game over. You Win!';
+  } else if (computerScore === 5) {
+    decision = 'Game over. You Lose!'
+  }
+
+  if (decision) {
+    buttons.forEach(btn => {
+      btn.removeEventListener('click', playRound);
+    });
+    updateDecisionDisplay(decision);
+  }
+}
+
+function updateDecisionDisplay(decision) {
+  let decisionDisplay = document.querySelector('.round-result');
+  decisionDisplay.innerText = decision;
+}
+
+function playRound(e) {
+  // uppercase player choice
+  let playerChoice = e.target.id[0].toUpperCase() + e.target.id.slice(1);
+  let computerChoice = computerPlay();
+  let result = compareChoices(playerChoice, computerChoice);
+  updateScore(result);
+  updateDisplay(playerChoice, computerChoice, result);
+  decideGame();
+}

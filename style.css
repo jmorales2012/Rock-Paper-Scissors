@@ -1,0 +1,59 @@
+* {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 14px;
+}
+
+h1 {
+  font-size: 20px;
+}
+
+.header {
+  text-align: center;
+}
+
+.button-container {
+  display: flex;
+  margin: 40px 0 20px 0;
+  padding: 0 100px;
+  justify-content: space-around;
+}
+
+.button-container button {
+  height: 150px;
+  width: 150px;
+  border-radius: 50%;
+  background-color: #9EFBCE;
+}
+
+.button-container button:focus {
+  outline: none;
+}
+
+.choices-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.score-container {
+  display: flex;
+  justify-content: space-around;
+}
+
+.score-container p {
+  font-size: 18px;
+}
+
+.reset-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 50px;
+}
+
+.reset-container button {
+  width: 200px;
+  height: 50px;
+  border-radius: 15px;
+  background-color: #F38F87;
+}
